@@ -1,0 +1,58 @@
+-- 2
+CREATE TABLE Mentors (
+ID INTEGER PRIMARY KEY,
+Imię TEXT,
+Nazwisko TEXT,
+Specjalizacja TEXT,
+Data_zatrudnienia DATE NOT NULL,
+Data_zwolnienia DATE DEFAULT NULL
+);
+
+-- 3
+INSERT INTO Mentors VALUES (1, 'Andrzej', 'Nowak', 'Python', '2012-02-22', '2024-11-07');
+INSERT INTO Mentors VALUES (2, 'Barbara', 'Kwiatkowska', 'SQL', '2022-12-07', '2025-01-02');
+INSERT INTO Mentors VALUES (3, 'Cezary', 'Jasiński', 'Java', '2018-05-25', '2024-03-03');
+INSERT INTO Mentors VALUES (4, 'Danuta', 'Czarnecka', 'JavaScript', '2019-11-13', '2020-12-01');
+INSERT INTO Mentors VALUES (5, 'Elżbieta', 'Kozak', 'C++', '2018-10-15', '2021-03-24');
+INSERT INTO Mentors VALUES (6, 'Franciszek', 'Łęcki', 'Ruby', '2014-09-01', '2022-03-16');
+INSERT INTO Mentors VALUES (7, 'Grzegorz', 'Ogórek', 'PHP', '2012-06-09', '2021-03-24');
+INSERT INTO Mentors VALUES (8, 'Halina', 'Brzoza', 'R', '2023-12-18', '2024-03-24');
+INSERT INTO Mentors VALUES (9, 'Izabela', 'Pasek', 'Perl', '2020-01-06', '2024-05-29');
+INSERT INTO Mentors VALUES (10, 'Jan', 'Solski', 'Rust', '2019-04-07', '2023-06-14');
+
+-- 4
+SELECT * FROM Mentors;
+
+-- 5
+UPDATE Mentors
+SET Nazwisko = 'Modrzejewska'
+WHERE id = 5;
+
+-- 6
+SELECT * FROM Mentors;
+
+-- 7
+UPDATE Mentors
+SET Specjalizacja = 'C#'
+WHERE id = 9;
+
+-- 8
+SELECT * FROM Mentors;
+
+-- 9
+ALTER TABLE Mentors 
+ADD COLUMN Wynagrodzenie int NOT NULL;
+
+-- 10
+UPDATE Mentors
+SET Wynagrodzenie = 1000
+WHERE id = 1;
+UPDATE Mentors
+SET Wynagrodzenie = 1000
+WHERE id = 2;
+UPDATE Mentors
+SET Wynagrodzenie = 1000
+WHERE id = 3;
+
+-- 11
+SELECT * FROM Mentors;
