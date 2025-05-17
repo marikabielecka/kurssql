@@ -1,3 +1,6 @@
+-- 1
+CREATE DATABASE school_coding
+
 -- 2
 CREATE TABLE Mentors (
 ID INTEGER PRIMARY KEY,
