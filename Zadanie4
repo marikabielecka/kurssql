@@ -1,0 +1,55 @@
+-- 1
+CREATE DATABASE Lista_Pracowników;
+
+-- 2
+CREATE TABLE Pracownicy (
+ID INT PRIMARY KEY,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Stanowisko TEXT NOT NULL,
+Dział TEXT CHECK (Dział='Marketing' OR Dział='Sprzedaż' OR Dział='HR')
+);
+
+-- 3
+INSERT INTO Pracownicy VALUES (1, 'Andrzej', 'Nowak', 'Kierownik działu', 'Sprzedaż');
+INSERT INTO Pracownicy VALUES (2, 'Barbara', 'Kwiatkowska', 'Straszy rekruter', 'HR');
+INSERT INTO Pracownicy VALUES (3, 'Cezary', 'Jasiński', 'Starszy sprzedawca', 'Sprzedaż');
+INSERT INTO Pracownicy VALUES (4, 'Danuta', 'Czarnecka', 'Młodszy sprzedawca', 'Sprzedaż');
+INSERT INTO Pracownicy VALUES (5, 'Elżbieta', 'Kozak', 'Kierownik działu', 'Marketing');
+INSERT INTO Pracownicy VALUES (6, 'Franciszek', 'Łęcki', 'Młodszy rekruter', 'HR');
+
+-- 4
+SELECT * FROM Pracownicy;
+
+-- 5
+ALTER TABLE Pracownicy
+ADD COLUMN Data_zatrudnienia DATE;
+
+-- 6
+INSERT INTO Pracownicy VALUES (7, 'Grzegorz', 'Drzewo', 'Młodszy koordynator', 'Marketing', '2020-02-01');
+
+-- 7
+SELECT * FROM Pracownicy;
+
+-- 8
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2022-12-01"
+WHERE id = 1;
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2021-03-01"
+WHERE id = 2;
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2023-09-01"
+WHERE id = 3;
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2021-02-01"
+WHERE id = 4;
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2024-04-01"
+WHERE id = 5;
+UPDATE Pracownicy
+SET Data_zatrudnienia = "2020-11-01"
+WHERE id = 6;
+
+-- 9
+SELECT * FROM Pracownicy;
