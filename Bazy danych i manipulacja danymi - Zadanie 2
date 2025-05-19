@@ -4,9 +4,9 @@ CREATE DATABASE school_coding
 -- 2
 CREATE TABLE Mentors (
 ID INTEGER PRIMARY KEY,
-Imię TEXT,
-Nazwisko TEXT,
-Specjalizacja TEXT,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Specjalizacja TEXT NOT NULL,
 Data_zatrudnienia DATE NOT NULL,
 Data_zwolnienia DATE DEFAULT NULL
 );
