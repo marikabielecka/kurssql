@@ -1,0 +1,39 @@
+-- 1
+CREATE DATABASE Pracownicy;
+
+-- 2
+CREATE TABLE Pracownicy (
+ID INT PRIMARY KEY,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Wiek DOUBLE CHECK (Wiek>18),
+Kurs TEXT CHECK (Kurs='DS.' OR Kurs='UX' OR Kurs='Java' OR Kurs='Tester')
+);
+
+
+-- 3
+-- table data import wizard from .csv file
+
+-- 4
+SELECT * FROM Pracownicy
+WHERE Wiek>30;
+
+-- 5
+SELECT * FROM Pracownicy
+WHERE Wiek<30;
+
+-- 6
+SELECT * FROM Pracownicy
+WHERE Nazwisko LIKE 'K%ki';
+
+-- 7
+ALTER TABLE pracownicy
+RENAME COLUMN ID to NR;
+
+-- 8
+SELECT * FROM Pracownicy
+WHERE NR IS NULL OR Imię IS NULL OR Nazwisko IS NULL OR Wiek IS NULL OR Kurs IS NULL;
+
+-- 9
+SELECT * FROM Pracownicy
+WHERE Kurs='Java';
