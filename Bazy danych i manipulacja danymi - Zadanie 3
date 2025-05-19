@@ -4,10 +4,10 @@ CREATE DATABASE Lista_Prezentów;
 -- 2
 CREATE TABLE Prezenty_2020 (
 ID INT PRIMARY KEY,
-Imię_obdarowanego TEXT,
-Pomysł_na_prezent TEXT,
-Cena INT,
-Miejsce_zakupu TEXT
+Imię_obdarowanego TEXT NOT NULL,
+Pomysł_na_prezent TEXT NOT NULL,
+Cena DOUBLE CHECK (Cena>=25),
+Miejsce_zakupu TEXT NOT NULL
 );
 
 -- 3
