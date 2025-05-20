@@ -1,0 +1,39 @@
+-- 1
+-- Baza 'Pracownicy' już istnieje
+
+-- 2
+CREATE TABLE Pracownicy (
+ID INT PRIMARY KEY,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Wiek VARCHAR(2) DEFAULT 18,
+Kurs TEXT CHECK (Kurs='DS.' OR Kurs='UX' OR Kurs='Java' OR Kurs='Tester' OR Kurs='')
+);
+
+
+-- 3
+-- table data import wizard from .csv file
+
+-- 4
+SELECT * FROM pracownicy
+WHERE Nazwisko='KOWALCZYK';
+
+-- 5
+SELECT * FROM pracownicy
+WHERE Wiek BETWEEN 30 AND 40;
+
+-- 6
+SELECT * FROM pracownicy
+WHERE Nazwisko NOT LIKE '%AND%';
+
+-- 7
+SELECT * FROM pracownicy
+LIMIT 7 OFFSET 0;
+
+-- 8 
+SELECT * FROM Pracownicy
+WHERE ID IS NULL OR Imię='' OR Nazwisko='' OR Wiek='' OR Kurs='';
+
+-- 9
+SELECT * FROM Pracownicy
+WHERE Kurs='';
