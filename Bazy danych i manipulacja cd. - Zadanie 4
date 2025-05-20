@@ -1,0 +1,41 @@
+-- 1
+-- Baza 'Pracownicy' już istnieje
+
+-- 2
+CREATE TABLE Pracownicy (
+ID INT PRIMARY KEY,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Wiek VARCHAR(2) DEFAULT 18,
+Kurs VARCHAR(50) DEFAULT 'Brak kursu'
+);
+
+
+-- 3
+-- table data import wizard from .csv file
+
+SELECT * FROM Pracownicy;
+
+-- 4
+SELECT * FROM Pracownicy
+WHERE Imię='Anna';
+
+-- 5
+SELECT * FROM Pracownicy
+WHERE Imię='';
+
+-- 6
+SELECT Kurs FROM Pracownicy
+WHERE Wiek BETWEEN 30 AND 40;
+
+-- 7 
+SELECT Wiek FROM pracownicy
+LIMIT 7 OFFSET 0;
+
+-- 8
+SELECT * FROM pracownicy
+WHERE Wiek='';
+
+-- 9
+ALTER TABLE pracownicy
+RENAME COLUMN Kurs to Szkolenie;
