@@ -6,7 +6,7 @@ CREATE TABLE Pracownicy (
 ID INT PRIMARY KEY,
 Imię TEXT NOT NULL,
 Nazwisko TEXT NOT NULL,
-Wiek int DEFAULT 18,
+Wiek VARCHAR(2) DEFAULT 18,
 Kurs TEXT CHECK (Kurs='DS.' OR Kurs='UX' OR Kurs='Java' OR Kurs='Tester' OR Kurs='')
 );
 
@@ -34,7 +34,7 @@ WHERE ID=1 OR ID=4 OR ID=7 OR ID=18 OR ID=20;
 
 -- 8
 SELECT * FROM Pracownicy
-WHERE ID IS NOT NULL AND Imię<>'' AND Nazwisko<>'' AND Wiek IS NOT NULL AND Kurs<>'';
+WHERE ID IS NOT NULL AND Imię<>'' AND Nazwisko<>'' AND Wiek<>'' AND Kurs<>'';
 
 -- 9
 SELECT * FROM Pracownicy
