@@ -1,0 +1,38 @@
+-- 1
+-- Baza 'Pracownicy' już istnieje
+
+-- 2
+CREATE TABLE Pracownicy (
+ID INT PRIMARY KEY,
+Imię TEXT NOT NULL,
+Nazwisko TEXT NOT NULL,
+Wiek VARCHAR(2) NOT NULL,
+Kurs VARCHAR(50) DEFAULT 'Brak kursu'
+);
+
+
+-- 3
+-- table data import wizard from .csv file
+
+-- 4
+SELECT DISTINCT Imię FROM Pracownicy;
+
+-- 5
+SELECT DISTINCT Nazwisko FROM Pracownicy;
+
+-- 6
+SELECT DISTINCT Kurs FROM Pracownicy
+WHERE Nazwisko='KOWALCZYK';
+
+-- 7
+SELECT * FROM Pracownicy
+WHERE Wiek='';
+
+-- 8
+SELECT Imię, Wiek FROM Pracownicy
+WHERE Imię='Patryk';
+
+-- 9 
+RENAME TABLE Pracownicy to Mentorzy;
+
+SELECT * FROM Mentorzy;
