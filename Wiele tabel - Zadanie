@@ -1,0 +1,149 @@
+-- Wprowadzenie
+-- a. Napisz kwerendę, która zwróci wszystkich klientów z zamówieniami zrealizowanymi w dniu 2008-01-08
+
+SELECT a.CUST_NAME, o.ORD_DATE
+FROM customer AS a, orders AS o
+WHERE a.CUST_CODE = o.CUST_CODE
+AND o.ORD_DATE = '2008-01-08';
+
+-- b. Napisz kwerendę, która zwróci listę agentów oraz klientów do nich przypisanych, wraz z ich obszarem działalności.
+
+SELECT a.AGENT_NAME AS 'salesman', c.CUST_NAME, c.WORKING_AREA
+FROM agents a, customer c
+WHERE a.WORKING_AREA = c.WORKING_AREA;
+
+-- INNER JOIN
+-- a. Wyszukaj listę klientów, którzy podjęli współpracę z agentami, których prowizja jest powyżej 12%; kolumna z imieniem agenta powinna mieć nazwę „Salesman”
+
+SELECT c.CUST_NAME AS 'Customer Name', a.AGENT_NAME AS 'Salesman', a.COMMISSION AS 'Commision'
+FROM agents a
+JOIN customer c
+ON a.AGENT_CODE = c.AGENT_CODE
+WHERE a.COMMISSION > 0.12;
+
+-- b. Wyszukaj szczegóły dot. Zamówień: nr zamówienia, datę, kwotę, klienta (nazwa kolumny powinna być „Customer Name”) oraz agenta (w tym wypadku nazwa kolumny to „Salesman”), który pracuje dla tego klienta oraz jego prowizję od zamówienia
+
+SELECT o.ORD_NUM AS 'Order number', o.ORD_DATE AS 'Order date', o.ORD_AMOUNT AS 'Order amount', c.CUST_NAME AS 'Customer Name', a.AGENT_NAME AS 'Salesman', a.COMMISSION AS 'Commision'
+FROM orders o
+JOIN customer c
+ON o.CUST_CODE = c.CUST_CODE
+JOIN agents a
+ON o.AGENT_CODE = a.AGENT_CODE;
+ 
+-- LEFT JOIN
+-- a. Wyszukaj listę - posortowaną rosnąco wg kodu klienta (jego id) – klientów wraz z kodami i imionami przypisanych do nich agentów (nazwij kolumnę zawierającą imiona agentów jako „Salesman”), wyszukaj również ich obszar działalności
+
+SELECT c.CUST_CODE AS 'Customer ID', c.CUST_NAME AS 'Customer Name', a.AGENT_CODE AS 'Agent ID', a.AGENT_NAME AS 'Salesman', a.WORKING_AREA AS 'Working Area'
+FROM customer c
+LEFT JOIN agents a ON c.AGENT_CODE = a.AGENT_CODE
+ORDER BY c.CUST_CODE;
+ 
+-- RIGHT JOIN
+-- a. Wyszukaj listę agentów pracujących dla jednego bądź więcej klientów lub takich, którzy jeszcze nie podjęli współpracy z żadnym klientem, posortuj listę rosnąco wg kolumny kodu agenta; nazwij kolumnę zawierającą nazwy agentów jako „Salesman”, wyszukaj również ich obszar działalności
+
+SELECT a.AGENT_CODE AS 'Agent ID', a.AGENT_NAME AS 'Salesman', a.WORKING_AREA AS 'Working Area'
+FROM agents a
+RIGHT JOIN customer c ON a.AGENT_CODE = c.AGENT_CODE
+ORDER BY a.AGENT_CODE;
+ 
+-- CROSS JOIN
+-- a. Wyszukaj iloczyn kartezjański agentów oraz klientów, w taki sposób, że każdy agent będzie widoczny dla wszystkich klientów i vice versa.
+
+SELECT a.AGENT_NAME AS 'Salesman', c.CUST_NAME AS 'Customer'
+FROM agents a
+CROSS JOIN customer c;
+
+-- b. Wyszukaj iloczyn kartezjański agentów oraz klientów, w taki sposób, że każdy agent będzie widoczny dla wszystkich klientów i vice versa, ale tylko jeżeli agent jest z tego samego obszaru co klient.
+
+SELECT a.AGENT_NAME AS 'Salesman', c.CUST_NAME AS 'Customer', a.WORKING_AREA AS 'Working Area'
+FROM agents a
+CROSS JOIN customer c
+WHERE a.WORKING_AREA = c.WORKING_AREA;
+
+-- c. Wyszukaj iloczyn kartezjański agentów oraz klientów, w taki sposób, że każdy agent będzie widoczny dla wszystkich klientów i vice versa, ale tylko jeżeli agent jest z innego obszaru niż klient, a klient posiada swoją własną ocenę (‘grade’)
+
+SELECT a.AGENT_NAME AS 'Salesman', c.CUST_NAME AS 'Customer', c.GRADE AS 'Grade', a.WORKING_AREA AS 'Working Area'
+FROM agents a
+CROSS JOIN customer c
+WHERE a.WORKING_AREA <> c.WORKING_AREA AND c.GRADE<>0;
+ 
+-- UNION
+-- a. Wyszukaj wszystkich agentów (ich kod – nazwij kolumne „ID” - oraz imię agenta); przypisz im wartość ‘Salesman’ w kolumnie o nazwie „Rodzaj”, oraz klientów – ich ID i nazwa (wartość ‘Customer’ w kolumnie „Rodzaj”) zlokalizowanych w Londynie
+
+SELECT a.AGENT_CODE AS 'ID', a.AGENT_NAME AS 'Name', a.WORKING_AREA AS 'Working area', 'Salesman' AS 'Rodzaj'
+FROM agents a
+WHERE WORKING_AREA = 'London'
+UNION
+SELECT c.CUST_CODE, c.CUST_NAME, c.WORKING_AREA, 'Customer' AS 'Rodzaj'
+FROM customer c
+WHERE WORKING_AREA = 'London';
+
+-- b. Napisz kwerendę, która zwróci raport pokazujący, który agent przyjął największe i najmniejsze zamówienia na każdy dzień
+ 
+WITH MAX_DAILY_ORDERS AS
+	(SELECT ORD_DATE, MAX(ORD_AMOUNT) AS 'MAX_ORDER'
+	  FROM orders
+	  GROUP BY ORD_DATE),
+
+MIN_DAILY_ORDERS AS
+	(SELECT ORD_DATE, MIN(ORD_AMOUNT) AS 'MIN_ORDER'
+	  FROM orders
+	  GROUP BY ORD_DATE)
+
+SELECT o.ORD_DATE, o.ORD_AMOUNT, a.AGENT_NAME, 'daily_max' AS 'ORDER_TYPE'
+FROM MAX_DAILY_ORDERS m
+INNER JOIN orders o
+ON o.ORD_DATE = m.ORD_DATE
+INNER JOIN agents a
+ON o.AGENT_CODE = a.AGENT_CODE
+WHERE o.ORD_AMOUNT = m.MAX_ORDER
+UNION
+SELECT o.ORD_DATE, o.ORD_AMOUNT, a.AGENT_NAME, 'daily_min' AS 'ORDER_TYPE'
+FROM MIN_DAILY_ORDERS m
+INNER JOIN orders o
+ON o.ORD_DATE = m.ORD_DATE
+INNER JOIN agents a
+ON o.AGENT_CODE = a.AGENT_CODE
+WHERE o.ORD_AMOUNT = m.MIN_ORDER;
+
+ 
+-- WITH
+-- a. Wyszukaj agenta w Londynie z prowizją powyżej 14% - nazwij widok „londonstaff”
+
+WITH londonstaff AS (
+SELECT a.AGENT_NAME, a.COMMISSION
+FROM agents a
+WHERE a.WORKING_AREA = 'London' AND a.commission>0.14
+)
+SELECT AGENT_NAME, COMMISSION
+FROM londonstaff;
+
+-- b. Utwórz widok „gradecount”, aby uzyskać liczbę klientów dla każdej oceny (‘grade’)
+
+WITH gradecount AS (
+SELECT c.grade, COUNT(c.grade) AS ClientCount
+FROM customer c
+GROUP BY c.grade
+)
+SELECT grade, ClientCount
+FROM gradecount;
+
+-- c. Utwórz widok (o nazwie „total_per_dzien”) do śledzenia liczby klientów, średniej kwoty zamówień oraz ogólnej sumy zamówień na każdy dzień
+
+WITH total_per_dzien AS (
+SELECT d.ord_date AS OrderDate, COUNT(d.cust_code) AS ClientCount, AVG(d.ord_amount) AS AveragePrice, SUM(d.ord_amount) AS PriceSUM
+FROM daysorder d
+GROUP BY d.ord_date
+)
+SELECT OrderDate, ClientCount, AveragePrice, PriceSUM
+FROM total_per_dzien;
+
+-- OR
+
+WITH total_per_dzien AS (
+SELECT o.ord_date AS OrderDate, COUNT(o.cust_code) AS ClientCount, AVG(o.ord_amount) AS AveragePrice, SUM(o.ord_amount) AS PriceSUM
+FROM orders o
+GROUP BY o.ord_date
+)
+SELECT OrderDate, ClientCount, AveragePrice, PriceSUM
+FROM total_per_dzien;
