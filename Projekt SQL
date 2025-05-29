@@ -1,0 +1,218 @@
+-- 1. Stwórz Bazę „Sklep odzieżowy”
+-- Create database Sklep_odzieżowy;
+
+-- 2. Utwórz tabelę „Producenci” z kolumnami:
+CREATE TABLE Sklep_odzieżowy.Producenci(
+  Prod_ID varchar(6) PRIMARY KEY NOT NULL DEFAULT '',
+  Prod_Nazwa varchar(40) DEFAULT NULL,
+  Prod_Adres varchar(100) DEFAULT NULL,
+  NIP varchar(9) DEFAULT NULL,
+  Data_umowy DATE NOT NULL
+);
+
+-- 3. Utwórz tabelę „Produkty” z kolumnami:
+CREATE TABLE Sklep_odzieżowy.Produkty(
+  Item_ID varchar(6) PRIMARY KEY NOT NULL,
+  Prod_ID varchar(6) DEFAULT NULL,
+  Item_Nazwa varchar(40) DEFAULT NULL,
+  Item_Opis varchar(100) DEFAULT NULL,
+  Netto_Zakup decimal(12,2) NOT NULL,
+  Netto_Sprzedaż decimal(12,2) NOT NULL,
+  Brutto_Zakup decimal(12,2) NOT NULL,
+  Brutto_Sprzedaż decimal(12,2) NOT NULL,
+  VAT decimal(10,2) DEFAULT 0.23
+);
+
+-- 4. Utwórz tabelę „Zamówienia” z kolumnami:
+CREATE TABLE Sklep_odzieżowy.Zamówienia(
+  Zam_ID varchar(10) NOT NULL,
+  Klient_ID varchar(6) DEFAULT NULL,
+  Item_ID varchar(6) DEFAULT NULL,
+  Data_zamówienia DATE NOT NULL
+);
+
+-- 5. Utwórz tabelę „Klienci” z kolumnami:
+CREATE TABLE Sklep_odzieżowy.Klienci(
+  Klient_ID varchar(6) PRIMARY KEY NOT NULL,
+  Klient_Imię varchar(40) DEFAULT NULL,
+  Klient_Nazwisko varchar(40) DEFAULT NULL,
+  Klient_Adres varchar(100) DEFAULT NULL
+);
+
+-- 6. Połącz tabele ze sobą za pomocą kluczy obcych:
+ALTER TABLE Produkty ADD CONSTRAINT Prod_ID FOREIGN KEY (Prod_ID) REFERENCES Producenci(Prod_ID);
+ALTER TABLE Zamówienia ADD CONSTRAINT Item_ID FOREIGN KEY (Item_ID) REFERENCES Produkty(Item_ID);
+ALTER TABLE Zamówienia ADD CONSTRAINT Klient_ID FOREIGN KEY (Klient_ID) REFERENCES Klienci(Klient_ID);
+
+-- 7. Każdą tabelę uzupełnij danymi wg:
+
+INSERT INTO Producenci (Prod_ID, Prod_Nazwa, Prod_Adres, NIP, Data_umowy) VALUES
+('P00001', 'Bilabo', 'ul. Zimowa 34, 16-400 Suwałki', '425767800', '2019-12-02'),
+('P00002', 'Annix', 'ul. Kwiatkowskiego 117, 45-573 Wrocław', '385642940', '2018-04-17'),
+('P00003', 'Kodar', 'ul. Wiejska 6, 00-001 Warszawa', '110349672', '2023-08-23'),
+('P00004', 'Salfa', 'ul. Piłsudskiego 12, 70-893 Szczecin', '297774034', '2024-10-05');
+
+
+INSERT INTO Produkty (Item_ID, Prod_ID, Item_Nazwa, Item_Opis, Netto_Zakup, Netto_Sprzedaż, Brutto_Zakup, Brutto_Sprzedaż, VAT) VALUES
+('10001', 'P00001', 'Koszulka', 'Bawełniana koszulka z krótkim rękawkiem biała', '32.51', '56.90', '39.99', '69.99', '0.23'),
+('10002', 'P00001', 'Spodnie', 'Dżinsowe spodnie szerokie niebieskie', '73.16', '130.07', '89.99', '159.99', '0.23'),
+('10003', 'P00001', 'Kurtka', 'Ortalionowa kurtka z podszewką zielona', '162.59', '235.76', '199.99', '289.99', '0.23'),
+('10004', 'P00001', 'Skarpety', 'Sportowe skarpety wysokie czarne', '8.12', '24.38', '9.99', '29.99', '0.23'),
+('10005', 'P00001', 'Majtki', 'Bawełniane majtki damskie żółte', '12.19', '32.51', '14.99', '39.99', '0.23'),
+('20001', 'P00002', 'Parasol', 'Parasol PVC przeźroczysty', '12.20', '48.70', '15.00', '59.90', '0.23'),
+('20002', 'P00002', 'Doniczka', 'Ceramiczna doniczka 12 cm zielona', '8.13', '32.44', '10.00', '39.90', '0.23'),
+('20003', 'P00002', 'Latarka', 'Latarka kieszonkowa na baterie', '13.82', '28.37', '17.00', '34.90', '0.23'),
+('20004', 'P00002', 'Poduszka', 'Poduszka ergonomiczna z pianki', '24.39', '53.58', '30.00', '65.90', '0.23'),
+('20005', 'P00002', 'Stojak', 'Stojak na ręcznik papierowy kuchenny', '12.20', '40.57', '15.00', '49.90', '0.23'),
+('30001', 'P00003', 'Pomadka', 'Pomadka matowa kolor 386', '29.26', '73.16', '35.99', '89.99', '0.23'),
+('30002', 'P00003', 'Szampon', 'Szampon do włosów suchych i łamliwych', '8.33', '28.45', '10.25', '34.99', '0.23'),
+('30003', 'P00003', 'Puder', 'Puder pod oczy transparentny', '16.25', '53.65', '19.99', '65.99', '0.23'),
+('30004', 'P00003', 'Waciki', 'Bawełniana waciki kosmetyczne okrągłe', '0.28', '6.50', '0.35', '7.99', '0.23'),
+('30005', 'P00003', 'Kredka do oczu', 'Kredka do oczu kolor brązowy', '8.12', '22.76', '9.99', '27.99', '0.23'),
+('40001', 'P00004', 'Zeszyt', 'Zeszyt A5 w kratkę 60 stron', '1.22', '4.88', '1.50', '6.00', '0.23'),
+('40002', 'P00004', 'Zestaw kredek', 'Zestaw kredek drewnianych 24 kolory', '12.20', '32.52', '15.00', '40.00', '0.23'),
+('40003', 'P00004', 'Farby', 'Zestaw farb akwarelowych 12 kolorów', '8.13', '24.39', '10.00', '30.00', '0.23'),
+('40004', 'P00004', 'Kalkulator', 'Kalkulator na baterie mini', '16.26', '28.46', '20.00', '35.00', '0.23'),
+('40005', 'P00004', 'Piórnik', 'Piórnik tekstylny na zamek', '14.63', '36.59', '18.00', '45.00', '0.23');
+
+INSERT INTO Zamówienia (Zam_ID, Klient_ID, Item_ID, Data_zamówienia) VALUES
+('Z00001', 'K00004', '40001', '2025-02-12'),
+('Z00001', 'K00004', '20005', '2025-02-12'),
+('Z00001', 'K00004', '20001', '2025-02-12'),
+('Z00002', 'K00008', '10003', '2025-04-05'),
+('Z00002', 'K00008', '10004', '2025-04-05'),
+('Z00003', 'K00002', '20002', '2025-03-13'),
+('Z00003', 'K00002', '20004', '2025-03-13'),
+('Z00003', 'K00002', '10001', '2025-03-13'),
+('Z00003', 'K00002', '40002', '2025-03-13'),
+('Z00004', 'K00005', '10003', '2025-01-25'),
+('Z00005', 'K00010', '20003', '2025-04-22'),
+('Z00005', 'K00010', '40004', '2025-04-22'),
+('Z00006', 'K00001', '30001', '2025-03-13'),
+('Z00006', 'K00001', '30004', '2025-03-13'),
+('Z00006', 'K00001', '30005', '2025-03-13'),
+('Z00007', 'K00003', '10005', '2024-12-29'),
+('Z00008', 'K00006', '20002', '2025-05-15'),
+('Z00008', 'K00006', '20004', '2025-05-15'),
+('Z00009', 'K00009', '10003', '2024-11-10'),
+('Z00009', 'K00009', '10002', '2024-11-10'),
+('Z00009', 'K00009', '30002', '2024-11-10'),
+('Z00009', 'K00009', '20001', '2024-11-10'),
+('Z00010', 'K00007', '40001', '2025-01-03'),
+('Z00010', 'K00007', '20003', '2025-01-03');
+
+
+INSERT INTO Klienci (Klient_ID, Klient_Imię, Klient_Nazwisko,  Klient_Adres)
+VALUES
+('K00001', 'Maria', 'Szczepańska', 'ul. Szczodra 15, 84-120 Władysławowo'),
+('K00002', 'Aniela', 'Beksińska', 'ul. Zielona 3/25, 34-500 Zakopane'),
+('K00003', 'Robert', 'Czerwiński', 'ul. Jana Pawła II 21, 37-000 Przemyśl'),
+('K00004', 'Zenon', 'Biela', 'ul. Lawendowa 67, 45-573 Wrocław'),
+('K00005', 'Krystyna', 'Fiołkowska', 'ul. Malinowa 1, 99-400 Łowicz'),
+('K00006', 'Zofia', 'Gąbka', 'ul. Długa 83, 80-801 Gdańsk'),
+('K00007', 'Jacek', 'Kwiatkowski', 'ul. Zimna 8, 00-001 Warszawa'),
+('K00008', 'Adrianna', 'Bączek', 'ul. Słoneczna 22, 70-893 Szczecin'),
+('K00009', 'Gabriel', 'Czarnecki', 'ul. Modrzewiowa 19, 16-400 Suwałki'),
+('K00010', 'Leon', 'Siennicki', 'ul. Kozia 43, 20-002 Lublin');
+
+-- 8. Wyświetl wszystkie produkty z wszystkimi danymi od producenta który znajduje się na pozycji 1 w tabeli „Producenci”
+
+SELECT * FROM Produkty i
+JOIN Producenci p
+ON i.Prod_ID = p.Prod_ID
+WHERE p.Prod_ID = (
+	SELECT Prod_ID FROM Producenci
+    ORDER BY Prod_ID
+    LIMIT 1
+    );
+
+-- 9. Posortuj te produkty alfabetycznie po nazwie
+
+SELECT * FROM produkty
+WHERE Prod_ID = (
+	SELECT Prod_ID FROM Producenci
+    ORDER BY Prod_ID
+    LIMIT 1
+    )
+ORDER BY Item_Nazwa ASC;
+
+-- 10. Wylicz średnią cenę za produktu od producenta z pozycji 1
+
+SELECT ROUND(AVG(Brutto_Sprzedaż), 2) AS Średnia FROM Produkty WHERE Prod_ID = 'P00001';
+
+-- 11. Wyświetl dwie grupy produktów tego producenta:
+
+WITH AvgPrice AS (
+	SELECT AVG(Brutto_Sprzedaż) AS srednia_cena, Prod_ID
+	FROM Produkty
+	GROUP BY Prod_ID)
+SELECT i.Item_ID,
+       i.Item_Nazwa,
+       i.Brutto_Sprzedaż,
+       CASE
+           WHEN i.Brutto_Sprzedaż <= ap.srednia_cena THEN 'Tanie'
+           ELSE 'Drogie'
+           END AS Kategoria_Cenowa
+FROM Produkty i
+JOIN AvgPrice ap
+ON i.Prod_ID = ap.Prod_ID
+WHERE i.Prod_ID = 'P00001'
+ORDER BY i.Brutto_Sprzedaż;
+
+
+-- 12. Wyświetl produkty zamówione, wyświetlając tylko ich nazwę
+
+SELECT Item_Nazwa FROM Produkty i
+CROSS JOIN Zamówienia z
+WHERE i.Item_ID = z.Item_ID;
+
+-- 13. Wyświetl wszystkie produkty zamówione – ograniczając wyświetlanie do 5 pozycji
+
+SELECT Item_Nazwa FROM Produkty i
+CROSS JOIN Zamówienia z
+WHERE i.Item_ID = z.Item_ID
+LIMIT 5;
+
+-- 14. Policz łączną wartość wszystkich zamówień
+
+SELECT SUM(Brutto_Sprzedaż) AS Kwota
+FROM Produkty i
+INNER JOIN  Zamówienia z ON z.Item_ID = i.Item_ID
+ORDER BY z.Item_ID;
+
+-- 15. Wyświetl wszystkie zamówienia wraz z nazwą produktu sortując je wg daty od najstarszego do najnowszego
+
+SELECT z.*, i.Item_Nazwa FROM Zamówienia z
+LEFT JOIN Produkty i ON z.Item_ID = i.Item_ID
+ORDER BY z.Data_zamówienia;
+
+-- 16. Sprawdź czy w tabeli produkty masz uzupełnione wszystkie dane – wyświetl pozycje dla których brakuje danych
+
+-- Usuwam opis z jednego z produktów:
+UPDATE Produkty
+SET Item_Opis=''
+WHERE Item_ID='10004';
+
+SELECT * FROM Produkty
+WHERE Item_ID IS NULL OR Prod_ID IS NULL OR Item_Nazwa='' OR Item_Opis='' OR  Netto_Zakup IS NULL OR Netto_Sprzedaż IS NULL OR Brutto_Zakup IS NULL OR Brutto_Sprzedaż IS NULL OR VAT IS NULL;
+
+-- 17. Wyświetl produkt najczęściej sprzedawany wraz z jego ceną
+
+WITH Ilość AS (
+	SELECT COUNT(Item_ID) AS Bestseller, Item_ID AS Kod 
+    FROM Zamówienia
+    GROUP BY Item_ID)
+SELECT MAX(Bestseller) AS Sprzedano_Sztuk, l.Kod, i.Brutto_Sprzedaż AS Cena
+FROM Ilość l
+INNER JOIN Produkty i ON l.Kod = i.Item_ID
+GROUP BY Item_ID
+ORDER BY Sprzedano_Sztuk DESC
+LIMIT 1;
+
+-- 18. Znajdź dzień w którym najwięcej zostało złożonych zamówień
+
+SELECT Data_zamówienia, COUNT(DISTINCT Zam_ID) AS Liczba_Zamówień
+FROM Zamówienia
+GROUP BY Data_zamówienia
+ORDER BY Liczba_Zamówień DESC
+LIMIT 1;
