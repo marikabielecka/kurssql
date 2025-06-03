@@ -1,20 +1,20 @@
 -- 1. Stwórz Bazę „Sklep odzieżowy”
--- Create database Sklep_odzieżowy;
+Create database Sklep_odzieżowy;
 
 -- 2. Utwórz tabelę „Producenci” z kolumnami:
 CREATE TABLE Sklep_odzieżowy.Producenci(
-  Prod_ID varchar(6) PRIMARY KEY NOT NULL DEFAULT '',
+  Prod_ID varchar(6) PRIMARY KEY NOT NULL,
   Prod_Nazwa varchar(40) DEFAULT NULL,
   Prod_Adres varchar(100) DEFAULT NULL,
-  NIP varchar(9) DEFAULT NULL,
+  NIP varchar(10) DEFAULT NULL,
   Data_umowy DATE NOT NULL
 );
 
 -- 3. Utwórz tabelę „Produkty” z kolumnami:
 CREATE TABLE Sklep_odzieżowy.Produkty(
   Item_ID varchar(6) PRIMARY KEY NOT NULL,
-  Prod_ID varchar(6) DEFAULT NULL,
-  Item_Nazwa varchar(40) DEFAULT NULL,
+  Prod_ID varchar(6) NOT NULL,
+  Item_Nazwa varchar(40) NOT NULL,
   Item_Opis varchar(100) DEFAULT NULL,
   Netto_Zakup decimal(12,2) NOT NULL,
   Netto_Sprzedaż decimal(12,2) NOT NULL,
@@ -26,9 +26,10 @@ CREATE TABLE Sklep_odzieżowy.Produkty(
 -- 4. Utwórz tabelę „Zamówienia” z kolumnami:
 CREATE TABLE Sklep_odzieżowy.Zamówienia(
   Zam_ID varchar(10) NOT NULL,
-  Klient_ID varchar(6) DEFAULT NULL,
-  Item_ID varchar(6) DEFAULT NULL,
-  Data_zamówienia DATE NOT NULL
+  Klient_ID varchar(6) NOT NULL,
+  Item_ID varchar(6) NOT NULL,
+  Data_zamówienia DATE NOT NULL,
+  PRIMARY KEY (Zam_ID, Klient_ID, Item_ID)
 );
 
 -- 5. Utwórz tabelę „Klienci” z kolumnami:
@@ -51,7 +52,6 @@ INSERT INTO Producenci (Prod_ID, Prod_Nazwa, Prod_Adres, NIP, Data_umowy) VALUES
 ('P00002', 'Annix', 'ul. Kwiatkowskiego 117, 45-573 Wrocław', '385642940', '2018-04-17'),
 ('P00003', 'Kodar', 'ul. Wiejska 6, 00-001 Warszawa', '110349672', '2023-08-23'),
 ('P00004', 'Salfa', 'ul. Piłsudskiego 12, 70-893 Szczecin', '297774034', '2024-10-05');
-
 
 INSERT INTO Produkty (Item_ID, Prod_ID, Item_Nazwa, Item_Opis, Netto_Zakup, Netto_Sprzedaż, Brutto_Zakup, Brutto_Sprzedaż, VAT) VALUES
 ('10001', 'P00001', 'Koszulka', 'Bawełniana koszulka z krótkim rękawkiem biała', '32.51', '56.90', '39.99', '69.99', '0.23'),
@@ -100,7 +100,6 @@ INSERT INTO Zamówienia (Zam_ID, Klient_ID, Item_ID, Data_zamówienia) VALUES
 ('Z00009', 'K00009', '20001', '2024-11-10'),
 ('Z00010', 'K00007', '40001', '2025-01-03'),
 ('Z00010', 'K00007', '20003', '2025-01-03');
-
 
 INSERT INTO Klienci (Klient_ID, Klient_Imię, Klient_Nazwisko,  Klient_Adres)
 VALUES
@@ -177,8 +176,7 @@ LIMIT 5;
 
 SELECT SUM(Brutto_Sprzedaż) AS Kwota
 FROM Produkty i
-INNER JOIN  Zamówienia z ON z.Item_ID = i.Item_ID
-ORDER BY z.Item_ID;
+INNER JOIN  Zamówienia z ON z.Item_ID = i.Item_ID;
 
 -- 15. Wyświetl wszystkie zamówienia wraz z nazwą produktu sortując je wg daty od najstarszego do najnowszego
 
